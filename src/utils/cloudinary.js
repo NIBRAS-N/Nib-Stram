@@ -4,11 +4,29 @@ import fs from "fs"
 
 
 
-cloudinary.config({ 
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME ,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET
-});
+// cloudinary.config({ 
+//   cloud_name: process.env.CLOUDINARY_CLOUD_NAME ,
+//   api_key: process.env.CLOUDINARY_API_KEY,
+//   api_secret: process.env.CLOUDINARY_API_SECRET
+// });
+
+const connectCloudinary = async()=>{
+  try {
+       await cloudinary.config({ 
+          cloud_name: process.env.CLOUDINARY_CLOUD_NAME, 
+          api_key: process.env.CLOUDINARY_API_KEY, 
+          api_secret: process.env.CLOUDINARY_API_SECRET 
+        });    
+        console.log("cloudinary connected ")
+  } catch (error) {
+      console.log("error in connecting coludinary ",error)
+      throw error
+  }
+  
+  
+}
+
+connectCloudinary()
 
 // ekta method banabo,oy method e parameter hishebe ekta local file path nibo, oy file cloudinary te upload korbo. upload korar por file path unlink kore dibo..
 
@@ -35,7 +53,31 @@ const uploadOnCloudinary = async(localFilePath) =>{
     }
 }
 
-export {uploadOnCloudinary}
+const deleteFromCloudinary = async(fileUrl) =>{
+  try {
+
+    if(!fileUrl?.trim() === "") return;
+
+    const publicId = fileUrl.split("/").pop().split(".")[0];
+
+    console.log(publicId)
+
+    const result = await cloudinary.uploader.destroy(publicId);
+
+    // console.log(result)
+
+    if(result.result == "ok"){
+      console.log("file Deleted successfully")
+    }
+    else{
+      console.log("Failed to delete the file")
+    }
+  } catch (error) {
+      console.log("error deleting file from cloudinary ", error.message)
+  }
+}
+
+export {uploadOnCloudinary , deleteFromCloudinary,connectCloudinary}
 
 // const connectCloudinary = async ()=>{
 //   try {
