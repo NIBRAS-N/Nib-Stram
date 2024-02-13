@@ -4,4 +4,4 @@
 
 - Model overview :
 
-    - <img src="wirehouse.PNG">
+    - <img src="Capture2.PNG">
