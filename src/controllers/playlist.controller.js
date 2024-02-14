@@ -159,7 +159,7 @@ const removeVideoToPlaylist = asyncHandler(async(req,res)=>{
         );
     }
     else{
-        res.status(400).json(
+        return res.status(400).json(
             new ApiResponse(400, null, "Video not found in the playlist")
         );
     }
@@ -196,7 +196,7 @@ const deletePlaylist = asyncHandler(async (req, res) => {
     
 
 
-    res.status(200).json(
+    return res.status(200).json(
         new ApiResponse(200, playlist, "Playlist deleted successfully")
     )
 })
@@ -240,7 +240,7 @@ const updatePlaylist = asyncHandler(async (req, res) => {
     }
 
     
-    res.status(200).json(
+    return res.status(200).json(
         new ApiResponse(200, playlist, "Playlist updated successfully")
     )
 })
