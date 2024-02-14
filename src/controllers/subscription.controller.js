@@ -64,7 +64,7 @@ const toggleSubscription = asyncHandler(async(req,res)=>{
 
     // console.log(populateSubscrip_tion)
 
-    res.status(200).json(
+    return res.status(200).json(
         new ApiResponse(200, f?populateSubscrip_tion:subscrip_tion, `${channelOwner.username}'s channel ${msg} `)
     )
 })
@@ -106,7 +106,7 @@ const getUserChannelSubscribers = asyncHandler(async (req,res)=>{
         throw new ApiError(400, "Invalid ChannelId")
     }
 
-    res.status(200).json(new ApiResponse(200,userSubcribers,"Channel subscribers fetched successfully"))
+    return  res.status(200).json(new ApiResponse(200,userSubcribers,"Channel subscribers fetched successfully"))
 })
 
 
@@ -146,7 +146,7 @@ const getUserSubscribedChannels = asyncHandler(async(req,res)=>{
          throw new ApiError(400, "Invalid ChannelId")
     }
 
-    res.status(200).json(
+    return res.status(200).json(
         new ApiResponse(200, mySubscribedChannels, `me(Logged in user) ${req.user.username}'s subscribed channels fetched successfully`)
     )
 
