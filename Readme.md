@@ -5,3 +5,8 @@
 - Model overview :
 
     - <img src="Capture2.PNG">
+- Postman SS:
+    - <img src="postman1.png">
+    - <img src="postman2.png">
+- Atlas SS:
+    - <img src="atlas.PNG">
