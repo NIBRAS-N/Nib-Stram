@@ -124,7 +124,7 @@ const getVideoById = asyncHandler(async (req, res) => {
 
     const videoOwner = await User.findById(owner);
     if(!videoOwner) throw new ApiError(200,"Owner of video missing")
-    res.status(200).json(
+    return res.status(200).json(
         new ApiResponse(200, video, `Video of ${videoOwner.username} -  "${video.title}"  fetched successfully`)
         
     )
