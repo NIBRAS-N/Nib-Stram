@@ -1,10 +1,11 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
 import { User } from "../models/user.model.js";
-import { uploadOnCloudinary } from "../utils/cloudinary.js";
+import { uploadOnCloudinary,deleteFromCloudinary } from "../utils/cloudinary.js";
 import mongoose from "mongoose";
 import jwt  from "jsonwebtoken";
 import { ApiResponse } from "../utils/ApiResponse.js";
+import { Video } from "../models/video.model.js";
 
 const generateAccessAndRefresToken = async (userId)=>{
     try {
@@ -361,6 +362,7 @@ const updateUserAvatar = asyncHandler(async(req,res)=>{
     if(!avatarLocalPath) throw ApiError(400,"Avatar file is missing");
 
     // todo: delete old image
+    await deleteFromCloudinary(req?.user.avatar)
 
     const avatar = await uploadOnCloudinary(avatarLocalPath);
 
@@ -396,6 +398,8 @@ const updateUserCoverImage = asyncHandler(async(req,res)=>{
     if(!coverImage.url){
         throw new ApiError(400,"Error while uploading coverImage");
     }
+
+    await deleteFromCloudinary(req?.user.coverImage)
 
     const user = await User.findByIdAndUpdate(
         req.user?._id,
@@ -537,5 +541,32 @@ const getWatchHistory = asyncHandler(async (req,res)=>{
 
 })
 
+const videoWatched = asyncHandler(async(req,res)=>{
+    const {videoId} = req.params
 
-export {registerUser,loginUser,logoutUser , refreshAccessToken, changeCurrentPassword , getCurrentUser , updateAccountDetails , updateUserAvatar , updateUserCoverImage , getUserChannelProfile,getWatchHistory};
+    let checking  ; 
+    try {
+        checking = await Video.findById(videoId)
+    } catch (error) {
+        throw new ApiError(400,"Invalid VideoId");
+    }
+    if(!checking) throw new ApiError(500,"Video Not found");
+
+    const user = await User.findById(req?.user._id);
+
+
+    if(!user) throw new ApiError(400,"something went wrong finding logged in user");
+
+    const checking2 = await user.watchHistory.includes(checking._id);
+    if(checking2){
+        return res.status(400).json(new ApiResponse(400,user,`title : "${checking.title} " already in watch History`));
+    }
+    await user.watchHistory.unshift(checking);
+
+    await user.save({validateBeforeSave:false});
+
+    return res.status(200).json(new ApiResponse(200,user,`title : ${checking.title} added to watch History`));
+    
+})
+
+export {registerUser,loginUser,logoutUser , refreshAccessToken, changeCurrentPassword , getCurrentUser , updateAccountDetails , updateUserAvatar , updateUserCoverImage , getUserChannelProfile,getWatchHistory,videoWatched};
