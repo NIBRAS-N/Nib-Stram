@@ -2,6 +2,7 @@
 
 - #### [Model Link](https://app.eraser.io/workspace/Hn8XdIqulrDBKUoxh4uX?origin=share)
 
+- #### `NOTE: This project follows industry-standard file structure and adheres to clean code principles to ensure readability, maintainability, and scalability. `
 - Model overview :
 
     - <img src="Capture2.PNG">
@@ -11,4 +12,4 @@
 - Atlas SS:
     - <img src="atlas.PNG">
 
-# `NOTE:  THis project follows industry-standard file structure and adheres to clean code principles to ensure readability, maintainability, and scalability.`
+
