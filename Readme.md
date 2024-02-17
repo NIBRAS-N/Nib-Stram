@@ -10,3 +10,5 @@
     - <img src="postman2.png">
 - Atlas SS:
     - <img src="atlas.PNG">
+
+# `NOTE:  THis project follows industry-standard file structure and adheres to clean code principles to ensure readability, maintainability, and scalability.`
